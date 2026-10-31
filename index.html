@@ -1,0 +1,328 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Lupus - Gestor de Gastos</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <!-- NAVEGACIÓN LATERAL -->
+        <aside class="sidebar">
+
+            <div class="logo">
+                <h2>Mi Finanzas</h2>
+                <p>Control personal</p>
+            </div>
+
+            <nav class="menu">
+                <button class="enlace-menu activo" data-vista="resumen">
+                    Resumen
+                </button>
+
+                <button class="enlace-menu" data-vista="movimientos">
+                    Movimientos
+                </button>
+
+                <button class="enlace-menu" data-vista="estadisticas">
+                    Estadísticas
+                </button>
+
+                <button class="enlace-menu" data-vista="presupuestos">
+                    Presupuestos
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>Mi Finanzas © 2026</p>
+            </div>
+
+        </aside>
+
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="contenido-principal">
+
+            <header class="encabezado">
+                <div>
+                    <h1 id="titulo-vista">Resumen</h1>
+                    <p>Controlá tus finanzas personales</p>
+                </div>
+            </header>
+
+
+            <!-- VISTA: RESUMEN -->
+            <section id="vista-resumen" class="vista activa">
+
+                <div class="periodo-resumen">
+                    <label for="mes-resumen">Período:</label>
+                    <input type="month" id="mes-resumen">
+                </div>
+
+                <section class="resumen">
+
+                    <article class="tarjeta">
+                        <h2>Balance del mes</h2>
+                        <p id="balance">$0</p>
+                    </article>
+
+                    <article class="tarjeta">
+                        <h2>Ingresos del mes</h2>
+                        <p id="ingresos">$0</p>
+                    </article>
+
+                    <article class="tarjeta">
+                        <h2>Gastos del mes</h2>
+                        <p id="gastos">$0</p>
+                    </article>
+
+                </section>
+
+                <section class="panel-bienvenida">
+                    <h2>Tu situación financiera</h2>
+                    <p>
+                        Acá vamos a incorporar gráficos y resúmenes
+                        que te ayuden a entender cómo administrás tu dinero.
+                    </p>
+                </section>
+
+            </section>
+
+
+            <!-- VISTA: MOVIMIENTOS -->
+            <section id="vista-movimientos" class="vista">
+
+                <section class="formulario">
+
+                    <h2>Registrar movimiento</h2>
+
+                    <form id="formulario-gasto">
+
+                        <input
+                            type="text"
+                            id="descripcion"
+                            placeholder="Descripción"
+                            required
+                        >
+
+                        <input
+                            type="text"
+                            id="monto"
+                            placeholder="Ej: 1.000.000,50"
+                            inputmode="decimal"
+                            autocomplete="off"
+                            required
+                        >
+
+                        <select id="tipo">
+                            <option value="ingreso">Ingreso</option>
+                            <option value="gasto">Gasto</option>
+                        </select>
+
+                        <select id="categoria">
+                            <option value="otros">Otros</option>
+                            <option value="alimentacion">Alimentación</option>
+                            <option value="transporte">Transporte</option>
+                            <option value="vivienda">Vivienda</option>
+                            <option value="servicios">Servicios</option>
+                            <option value="salud">Salud</option>
+                            <option value="entretenimiento">Entretenimiento</option>
+                            <option value="trabajo">Trabajo</option>
+                        </select>
+
+                        <input
+                            type="date"
+                            id="fecha"
+                            required
+                        >
+
+                        <button type="submit">
+                            Agregar movimiento
+                        </button>
+
+                    </form>
+
+                </section>
+
+
+                <section class="movimientos">
+
+                    <h2>Historial de movimientos</h2>
+
+                    <div class="filtros">
+
+                        <select id="filtro-mes">
+                            <option value="todos">Todos los meses</option>
+                        </select>
+
+                        <select id="filtro-tipo">
+                            <option value="todos">Todos los movimientos</option>
+                            <option value="ingreso">Ingresos</option>
+                            <option value="gasto">Gastos</option>
+                        </select>
+
+                        <select id="filtro-categoria">
+                            <option value="todos">Todas las categorías</option>
+                            <option value="alimentacion">Alimentación</option>
+                            <option value="transporte">Transporte</option>
+                            <option value="vivienda">Vivienda</option>
+                            <option value="servicios">Servicios</option>
+                            <option value="salud">Salud</option>
+                            <option value="entretenimiento">Entretenimiento</option>
+                            <option value="trabajo">Trabajo</option>
+                            <option value="otros">Otros</option>
+                        </select>
+
+                    </div>
+
+                    <ul id="lista-movimientos"></ul>
+
+                </section>
+
+            </section>
+
+
+            <!-- VISTA: ESTADÍSTICAS -->
+            
+<section id="vista-estadisticas" class="vista">
+
+    <div class="estadisticas-encabezado">
+        <h2>Análisis de tus finanzas</h2>
+        <p>Descubrí cómo se distribuye y evoluciona tu dinero.</p>
+    </div>
+    <div class="periodo-resumen">
+        <label for="mes-estadisticas">Consultar período:</label>
+        <input type="month" id="mes-estadisticas">
+    </div>
+    <div class="contenedor-graficos">
+
+        <article class="panel-grafico">
+            <h3>Gastos por categoría</h3>
+            <p>Distribución de tus gastos del mes seleccionado.</p>
+
+            <div class="grafico">
+                <canvas id="grafico-categorias"></canvas>
+            </div>
+        </article>
+
+        <article class="panel-grafico">
+            <h3>Ingresos vs. gastos</h3>
+            <p>Comparación de los últimos seis meses.</p>
+
+            <div class="grafico">
+                <canvas id="grafico-mensual"></canvas>
+            </div>
+        </article>
+
+    </div>
+
+</section>
+
+
+
+            
+<!-- VISTA: PRESUPUESTOS -->
+<section id="vista-presupuestos" class="vista">
+
+    <div class="presupuestos-encabezado">
+        <div>
+            <h2>Control de presupuestos</h2>
+            <p>Organizá tus límites de gastos mensuales.</p>
+        </div>
+
+        <div class="periodo-resumen">
+            <label for="mes-presupuesto">Período:</label>
+            <input type="month" id="mes-presupuesto">
+        </div>
+    </div>
+
+
+    <!-- RESUMEN DEL PRESUPUESTO -->
+    <div class="resumen-presupuesto">
+
+        <article class="tarjeta">
+            <h2>Presupuesto total</h2>
+            <p id="presupuesto-total">$0</p>
+        </article>
+
+        <article class="tarjeta">
+            <h2>Total gastado</h2>
+            <p id="presupuesto-gastado">$0</p>
+        </article>
+
+        <article class="tarjeta">
+            <h2>Dinero disponible</h2>
+            <p id="presupuesto-disponible">$0</p>
+        </article>
+
+    </div>
+
+
+    <!-- FORMULARIO PARA CREAR PRESUPUESTOS -->
+    <section class="formulario">
+
+        <h2>Crear presupuesto</h2>
+
+        <form id="formulario-presupuesto">
+
+            <select id="categoria-presupuesto" required>
+                <option value="">Seleccionar categoría</option>
+                <option value="alimentacion">Alimentación</option>
+                <option value="transporte">Transporte</option>
+                <option value="vivienda">Vivienda</option>
+                <option value="servicios">Servicios</option>
+                <option value="salud">Salud</option>
+                <option value="entretenimiento">Entretenimiento</option>
+                <option value="trabajo">Trabajo</option>
+                <option value="otros">Otros</option>
+            </select>
+
+            <input
+                type="text"
+                id="monto-presupuesto"
+                placeholder="Límite mensual"
+                inputmode="decimal"
+                autocomplete="off"
+                required
+            >
+
+            <button type="submit">
+                Crear presupuesto
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- LISTADO DE PRESUPUESTOS -->
+    <section class="lista-presupuestos">
+
+        <h2>Mis presupuestos</h2>
+
+        <div id="contenedor-presupuestos">
+        </div>
+
+    </section>
+
+</section>
+
+
+        </main>
+
+    </div>
+
+    <script src="libs/chart.umd.min.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>
