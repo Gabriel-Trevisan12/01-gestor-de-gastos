@@ -675,3 +675,536 @@ form button:hover {
         text-align: left;
     }
 }
+
+/* =========================================
+   13. RESPONSIVE REFINADO - LUPUS
+   Ajustes para notebook, tablet y celular.
+========================================= */
+
+html {
+    width: 100%;
+    min-width: 320px;
+    scroll-behavior: smooth;
+}
+
+body {
+    min-width: 320px;
+    overflow-x: hidden;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button,
+select {
+    touch-action: manipulation;
+}
+
+.contenido-principal,
+.vista,
+.formulario,
+.movimientos,
+.panel-grafico,
+.lista-presupuestos {
+    min-width: 0;
+}
+
+.tarjeta p {
+    overflow-wrap: anywhere;
+}
+
+/* Notebook y tablet horizontal */
+@media (max-width: 1100px) {
+    .sidebar {
+        width: 220px;
+        padding: 25px 16px;
+    }
+
+    .contenido-principal {
+        padding: 28px 24px;
+    }
+
+    .resumen,
+    .resumen-presupuesto {
+        gap: 14px;
+    }
+
+    .tarjeta {
+        padding: 20px;
+    }
+
+    #lista-movimientos li {
+        grid-template-columns: minmax(130px, 2fr) minmax(100px, 1.2fr) minmax(85px, 1fr) minmax(110px, 1.5fr) 90px;
+        gap: 10px;
+    }
+
+    #lista-movimientos li button {
+        width: 90px;
+    }
+}
+
+/* Tablet vertical y pantallas medianas */
+@media (max-width: 850px) {
+    .app-container {
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        width: 185px;
+        padding: 22px 12px;
+    }
+
+    .logo {
+        padding-left: 6px;
+        margin-bottom: 30px;
+    }
+
+    .contenido-principal {
+        padding: 24px 18px;
+    }
+
+    .resumen,
+    .resumen-presupuesto {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .resumen .tarjeta:last-child,
+    .resumen-presupuesto .tarjeta:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .contenedor-graficos {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .grafico {
+        height: 270px;
+    }
+
+    #lista-movimientos li {
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        gap: 10px 14px;
+        padding: 14px 10px;
+    }
+
+    #lista-movimientos li span:nth-child(2),
+    #lista-movimientos li span:nth-child(3),
+    #lista-movimientos li span:nth-child(4) {
+        text-align: left;
+    }
+
+    #lista-movimientos li span:nth-child(4) {
+        justify-self: start;
+    }
+
+    #lista-movimientos li button {
+        width: auto;
+        justify-self: start;
+    }
+}
+
+/* Celulares */
+@media (max-width: 600px) {
+    .app-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        min-height: auto;
+        padding: 14px 14px 12px;
+        gap: 12px;
+    }
+
+    .logo {
+        margin: 0;
+        padding: 0 4px;
+    }
+
+    .logo h2 {
+        font-size: 21px;
+        margin-bottom: 3px;
+    }
+
+    .logo p {
+        font-size: 12px;
+    }
+
+    .menu {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+    }
+
+    .enlace-menu {
+        width: 100%;
+        min-width: 0;
+        min-height: 42px;
+        padding: 9px 5px;
+        border-radius: 7px;
+        font-size: 12px;
+        line-height: 1.2;
+        text-align: center;
+        overflow-wrap: anywhere;
+    }
+
+    .contenido-principal {
+        width: 100%;
+        padding: 20px 14px 30px;
+    }
+
+    .encabezado {
+        margin-bottom: 20px;
+    }
+
+    .encabezado h1 {
+        font-size: 23px;
+        line-height: 1.2;
+    }
+
+    .encabezado p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .periodo-resumen {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 7px;
+        margin-bottom: 16px;
+    }
+
+    .periodo-resumen input {
+        width: 100%;
+        min-height: 43px;
+    }
+
+    .resumen,
+    .resumen-presupuesto {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .resumen .tarjeta:last-child,
+    .resumen-presupuesto .tarjeta:last-child {
+        grid-column: auto;
+    }
+
+    .tarjeta {
+        padding: 18px;
+        border-radius: 10px;
+    }
+
+    .tarjeta h2 {
+        margin-bottom: 10px;
+        font-size: 13px;
+    }
+
+    .tarjeta p {
+        font-size: clamp(21px, 6vw, 25px);
+    }
+
+    .panel-bienvenida,
+    .formulario,
+    .movimientos,
+    .lista-presupuestos,
+    .panel-grafico {
+        padding: 17px 14px;
+        border-radius: 10px;
+    }
+
+    .panel-bienvenida h2,
+    .formulario h2,
+    .movimientos h2,
+    .lista-presupuestos h2 {
+        font-size: 17px;
+    }
+
+    .panel-bienvenida p {
+        font-size: 14px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    form input,
+    form select,
+    form button {
+        width: 100%;
+        min-width: 0;
+        min-height: 44px;
+        font-size: 16px; /* Evita zoom automático en iPhone */
+    }
+
+    .filtros {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 9px;
+        margin: 16px 0;
+    }
+
+    .filtros select {
+        width: 100%;
+        min-width: 0;
+        min-height: 43px;
+        font-size: 14px;
+    }
+
+    #lista-movimientos {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 14px;
+    }
+
+    #lista-movimientos li {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 9px 12px;
+        padding: 13px;
+        border: 1px solid var(--color-borde);
+        border-radius: 9px;
+        background: #fff;
+    }
+
+    #lista-movimientos li span:nth-child(1) {
+        min-width: 0;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    #lista-movimientos li span:nth-child(2) {
+        justify-self: start;
+        font-size: 11px;
+        padding: 5px 8px;
+    }
+
+    #lista-movimientos li span:nth-child(3) {
+        font-size: 12px;
+        color: var(--color-secundario);
+    }
+
+    #lista-movimientos li span:nth-child(4) {
+        justify-self: end;
+        font-size: 14px;
+    }
+
+    #lista-movimientos li button {
+        grid-column: 1 / -1;
+        justify-self: stretch;
+        width: 100%;
+        min-height: 38px;
+        padding: 9px 12px;
+        font-size: 13px;
+    }
+
+    .estadisticas-encabezado h2,
+    .presupuestos-encabezado h2 {
+        font-size: 19px;
+    }
+
+    .estadisticas-encabezado p,
+    .presupuestos-encabezado p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .grafico {
+        height: 235px;
+    }
+
+    .presupuestos-encabezado {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .presupuesto-item {
+        padding: 15px;
+    }
+
+    .presupuesto-info {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .presupuesto-info p {
+        text-align: left;
+        overflow-wrap: anywhere;
+    }
+
+    .presupuesto-detalle {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+    }
+}
+
+/* Celulares muy angostos */
+@media (max-width: 360px) {
+    .contenido-principal {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .menu {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .enlace-menu {
+        font-size: 13px;
+    }
+
+    .tarjeta p {
+        font-size: 21px;
+    }
+}
+
+
+/* Acciones de cada movimiento */
+.acciones-movimiento {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+#lista-movimientos li .acciones-movimiento button {
+    width: auto;
+    min-width: 72px;
+    padding: 8px 10px;
+    font-size: 13px;
+}
+
+#lista-movimientos li .boton-editar-movimiento {
+    background: #2563eb;
+}
+
+#lista-movimientos li .boton-editar-movimiento:hover {
+    background: #1d4ed8;
+}
+
+#lista-movimientos li .boton-eliminar-movimiento {
+    background: #dc2626;
+}
+
+#lista-movimientos li .boton-eliminar-movimiento:hover {
+    background: #b91c1c;
+}
+
+form .boton-cancelar-edicion {
+    background: #64748b;
+}
+
+form .boton-cancelar-edicion:hover {
+    background: #475569;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 600px) {
+    #lista-movimientos li {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    #lista-movimientos li .acciones-movimiento {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+    }
+}
+
+
+/* Informe mensual */
+.boton-informe {
+    width: auto;
+    padding: 10px 16px;
+    background: #2563eb;
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.boton-informe:hover { background: #1d4ed8; }
+.periodo-resumen {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+@media (max-width: 600px) {
+    .boton-informe { width: 100%; }
+}
+/* Ajustes visuales de movimientos */
+#lista-movimientos li {
+    grid-template-columns:
+        minmax(0, 2fr)
+        minmax(90px, 1.2fr)
+        minmax(90px, 1fr)
+        minmax(110px, 1fr)
+        auto;
+}
+
+#lista-movimientos li span:nth-child(4) {
+    text-align: left;
+    justify-self: start;
+    white-space: nowrap;
+}
+
+#lista-movimientos li .acciones-movimiento {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+#lista-movimientos li .boton-eliminar-movimiento {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #dc2626;
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 1;
+    border-radius: 7px;
+}
+
+#lista-movimientos li .boton-eliminar-movimiento:hover {
+    background-color: #991b1b;
+}
+
+/* Adaptación para celulares */
+@media (max-width: 600px) {
+    #lista-movimientos li {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    #lista-movimientos li span:nth-child(4) {
+        justify-self: start;
+        text-align: left;
+    }
+
+    #lista-movimientos li .acciones-movimiento {
+        grid-column: 1 / -1;
+        justify-content: flex-end;
+    }
+}

@@ -66,6 +66,9 @@
                 <div class="periodo-resumen">
                     <label for="mes-resumen">Período:</label>
                     <input type="month" id="mes-resumen">
+                    <button type="button" id="boton-informe-mensual" class="boton-informe">
+                        Descargar informe mensual (PDF)
+                    </button>
                 </div>
 
                 <section class="resumen">
@@ -103,7 +106,7 @@
 
                 <section class="formulario">
 
-                    <h2>Registrar movimiento</h2>
+                    <h2 id="titulo-formulario-movimiento">Registrar movimiento</h2>
 
                     <form id="formulario-gasto">
 
@@ -145,8 +148,12 @@
                             required
                         >
 
-                        <button type="submit">
+                        <button type="submit" id="boton-guardar-movimiento">
                             Agregar movimiento
+                        </button>
+
+                        <button type="button" id="boton-cancelar-edicion" class="boton-cancelar-edicion" hidden>
+                            Cancelar edición
                         </button>
 
                     </form>
@@ -180,6 +187,14 @@
                             <option value="entretenimiento">Entretenimiento</option>
                             <option value="trabajo">Trabajo</option>
                             <option value="otros">Otros</option>
+                        </select>
+
+                        <label class="ordenar-label" for="orden-movimientos">Ordenar de:</label>
+                        <select id="orden-movimientos" aria-label="Ordenar movimientos">
+                            <option value="recientes">Más recientes</option>
+                            <option value="antiguos">Más antiguos</option>
+                            <option value="mayor-menor">Mayor a menor importe</option>
+                            <option value="menor-mayor">Menor a mayor importe</option>
                         </select>
 
                     </div>

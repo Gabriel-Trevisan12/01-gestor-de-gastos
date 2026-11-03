@@ -4,8 +4,12 @@
 // ==========================================
 
 let movimientos = [];
+let movimientoEnEdicionId = null;
 
 const formulario = document.getElementById("formulario-gasto");
+const tituloFormularioMovimiento = document.getElementById("titulo-formulario-movimiento");
+const botonGuardarMovimiento = document.getElementById("boton-guardar-movimiento");
+const botonCancelarEdicion = document.getElementById("boton-cancelar-edicion");
 
 const descripcionInput = document.getElementById("descripcion");
 const montoInput = document.getElementById("monto");
@@ -22,7 +26,9 @@ const listaMovimientos = document.getElementById("lista-movimientos");
 const filtroMes = document.getElementById("filtro-mes");
 const filtroTipo = document.getElementById("filtro-tipo");
 const filtroCategoria = document.getElementById("filtro-categoria");
+const ordenMovimientos = document.getElementById("orden-movimientos");
 const mesResumen = document.getElementById("mes-resumen");
+const botonInformeMensual = document.getElementById("boton-informe-mensual");
 // ==========================================
 // NAVEGACIÓN ENTRE SECCIONES
 // ==========================================
@@ -412,16 +418,31 @@ formulario.addEventListener("submit", function(event) {
         return;
     }
 
-    const movimiento = {
-        id: Date.now(),
-        descripcion: descripcionFormateada,
-        monto: monto,
-        tipo: tipo,
-        categoria: categoria,
-        fecha: fecha
-    };
-
-    movimientos.push(movimiento);
+    if (movimientoEnEdicionId !== null) {
+        movimientos = movimientos.map(function(movimiento) {
+            if (movimiento.id === movimientoEnEdicionId) {
+                return {
+                    ...movimiento,
+                    descripcion: descripcionFormateada,
+                    monto: monto,
+                    tipo: tipo,
+                    categoria: categoria,
+                    fecha: fecha
+                };
+            }
+            return movimiento;
+        });
+    } else {
+        const movimiento = {
+            id: Date.now(),
+            descripcion: descripcionFormateada,
+            monto: monto,
+            tipo: tipo,
+            categoria: categoria,
+            fecha: fecha
+        };
+        movimientos.push(movimiento);
+    }
 
     guardarMovimientos();
     actualizarResumen();
@@ -430,9 +451,7 @@ formulario.addEventListener("submit", function(event) {
     actualizarGraficos();
     actualizarPresupuestos();
 
-    formulario.reset();
-
-    fechaInput.value = obtenerFechaHoy();
+    cancelarEdicionMovimiento();
 
 });
 
@@ -478,7 +497,158 @@ function actualizarResumen() {
     gastosElement.textContent = formatearDinero(totalGastos);
     balanceElement.textContent = formatearDinero(balance);
 
+ }
+
+// ==========================================
+// INFORME MENSUAL DESCARGABLE (IMPRIMIR / PDF)
+// ==========================================
+
+function escaparHTML(valor) {
+    return String(valor ?? "").replace(/[&<>"']/g, function(caracter) {
+        return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        }[caracter];
+    });
 }
+
+function generarInformeMensual() {
+    const mesSeleccionado = mesResumen.value;
+
+    if (!mesSeleccionado) {
+        alert("Seleccioná un mes para generar el informe.");
+        return;
+    }
+
+    const movimientosDelMes = movimientos.filter(function(movimiento) {
+        return movimiento.fecha && movimiento.fecha.startsWith(mesSeleccionado);
+    }).sort(function(a, b) {
+        return (a.fecha || "").localeCompare(b.fecha || "");
+    });
+
+    const totalIngresos = movimientosDelMes.reduce(function(total, movimiento) {
+        return movimiento.tipo === "ingreso" ? total + Number(movimiento.monto || 0) : total;
+    }, 0);
+
+    const totalGastos = movimientosDelMes.reduce(function(total, movimiento) {
+        return movimiento.tipo === "gasto" ? total + Number(movimiento.monto || 0) : total;
+    }, 0);
+
+    const balance = totalIngresos - totalGastos;
+    const nombresCategorias = {
+        alimentacion: "Alimentación",
+        transporte: "Transporte",
+        vivienda: "Vivienda",
+        servicios: "Servicios",
+        salud: "Salud",
+        entretenimiento: "Entretenimiento",
+        trabajo: "Trabajo",
+        otros: "Otros"
+    };
+
+    const gastosPorCategoria = {};
+    movimientosDelMes.forEach(function(movimiento) {
+        if (movimiento.tipo === "gasto") {
+            const categoria = nombresCategorias[movimiento.categoria] || "Otros";
+            gastosPorCategoria[categoria] = (gastosPorCategoria[categoria] || 0) + Number(movimiento.monto || 0);
+        }
+    });
+
+    const nombreMes = new Intl.DateTimeFormat("es-AR", {
+        month: "long",
+        year: "numeric"
+    }).format(new Date(mesSeleccionado + "-15T12:00:00"));
+
+    const filasMovimientos = movimientosDelMes.length
+        ? movimientosDelMes.map(function(movimiento) {
+            const partesFecha = (movimiento.fecha || "").split("-");
+            const fecha = partesFecha.length === 3 ? `${partesFecha[2]}/${partesFecha[1]}/${partesFecha[0]}` : "Sin fecha";
+            const tipo = movimiento.tipo === "ingreso" ? "Ingreso" : "Gasto";
+            const categoria = nombresCategorias[movimiento.categoria] || "Otros";
+            const signo = movimiento.tipo === "ingreso" ? "+" : "−";
+            return `<tr>
+                <td>${escaparHTML(fecha)}</td>
+                <td>${escaparHTML(movimiento.descripcion)}</td>
+                <td>${escaparHTML(categoria)}</td>
+                <td>${tipo}</td>
+                <td class="numero">${signo}${formatearDinero(Number(movimiento.monto) || 0)}</td>
+            </tr>`;
+        }).join("")
+        : '<tr><td colspan="5" class="vacio">No hay movimientos registrados para este mes.</td></tr>';
+
+    const filasCategorias = Object.entries(gastosPorCategoria)
+        .sort(function(a, b) { return b[1] - a[1]; })
+        .map(function([categoria, total]) {
+            return `<tr><td>${escaparHTML(categoria)}</td><td class="numero">${formatearDinero(total)}</td></tr>`;
+        }).join("") || '<tr><td colspan="2" class="vacio">No hay gastos para clasificar.</td></tr>';
+
+    const ventanaInforme = window.open("", "_blank");
+    if (!ventanaInforme) {
+        alert("El navegador bloqueó la ventana del informe. Permití las ventanas emergentes para Lupus e intentá nuevamente.");
+        return;
+    }
+
+    ventanaInforme.document.open();
+    ventanaInforme.document.write(`<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informe mensual Lupus - ${escaparHTML(nombreMes)}</title>
+<style>
+    * { box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; color: #172033; margin: 32px auto; padding: 0 24px; max-width: 1000px; }
+    header { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; border-bottom: 3px solid #2563eb; padding-bottom: 18px; margin-bottom: 24px; }
+    h1 { margin: 0 0 6px; color: #1e40af; font-size: 28px; }
+    h2 { font-size: 18px; margin: 28px 0 12px; }
+    p { color: #64748b; margin: 4px 0; }
+    .marca { font-weight: bold; color: #2563eb; font-size: 20px; }
+    .acciones { display: flex; gap: 8px; margin: 0 0 20px; }
+    button { border: 0; border-radius: 7px; background: #2563eb; color: white; padding: 10px 16px; cursor: pointer; font-weight: bold; }
+    button.secundario { background: #64748b; }
+    .tarjetas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .tarjeta { border: 1px solid #dbe3ef; border-radius: 10px; padding: 16px; }
+    .tarjeta span { display: block; color: #64748b; font-size: 13px; margin-bottom: 8px; }
+    .tarjeta strong { font-size: 20px; }
+    .balance { color: ${balance >= 0 ? '#15803d' : '#dc2626'}; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 10px 8px; border-bottom: 1px solid #e2e8f0; text-align: left; }
+    th { background: #eff6ff; color: #1e40af; }
+    .numero { text-align: right; white-space: nowrap; }
+    .vacio { text-align: center; color: #64748b; padding: 18px; }
+    footer { border-top: 1px solid #e2e8f0; margin-top: 30px; padding-top: 12px; color: #94a3b8; font-size: 11px; }
+    @media (max-width: 600px) { body { margin: 16px auto; padding: 0 12px; } .tarjetas { grid-template-columns: 1fr; } header { flex-direction: column; } table { font-size: 11px; } th, td { padding: 7px 4px; } }
+    @media print { body { margin: 0; padding: 0; } .acciones { display: none; } .tarjeta, table { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<header>
+    <div><h1>Informe financiero mensual</h1><p>${escaparHTML(nombreMes.charAt(0).toUpperCase() + nombreMes.slice(1))}</p></div>
+    <div class="marca">LUPUS</div>
+</header>
+<div class="acciones">
+    <button onclick="window.print()">Guardar como PDF / Imprimir</button>
+    <button class="secundario" onclick="window.close()">Cerrar</button>
+</div>
+<section class="tarjetas">
+    <div class="tarjeta"><span>Ingresos del mes</span><strong>${formatearDinero(totalIngresos)}</strong></div>
+    <div class="tarjeta"><span>Gastos del mes</span><strong>${formatearDinero(totalGastos)}</strong></div>
+    <div class="tarjeta"><span>Balance mensual</span><strong class="balance">${formatearDinero(balance)}</strong></div>
+</section>
+<h2>Gastos por categoría</h2>
+<table><thead><tr><th>Categoría</th><th class="numero">Total gastado</th></tr></thead><tbody>${filasCategorias}</tbody></table>
+<h2>Detalle de movimientos (${movimientosDelMes.length})</h2>
+<table><thead><tr><th>Fecha</th><th>Descripción</th><th>Categoría</th><th>Tipo</th><th class="numero">Importe</th></tr></thead><tbody>${filasMovimientos}</tbody></table>
+<footer>Generado con Lupus · Los datos corresponden a los movimientos guardados en este dispositivo.</footer>
+</body>
+</html>`);
+    ventanaInforme.document.close();
+}
+
+botonInformeMensual.addEventListener("click", generarInformeMensual);
 
 // ==========================================
 // ESTADÍSTICAS Y GRÁFICOS
@@ -764,8 +934,28 @@ function mostrarMovimientos() {
     listaMovimientos.innerHTML = "";
 
     const movimientosFiltrados = filtrarMovimientos();
+    const movimientosOrdenados = [...movimientosFiltrados];
 
-    movimientosFiltrados.forEach(function(movimiento) {
+    movimientosOrdenados.sort(function(a, b) {
+        const fechaA = a.fecha || "";
+        const fechaB = b.fecha || "";
+        const importeA = Number(a.monto) || 0;
+        const importeB = Number(b.monto) || 0;
+
+        switch (ordenMovimientos.value) {
+            case "antiguos":
+                return fechaA.localeCompare(fechaB);
+            case "mayor-menor":
+                return importeB - importeA;
+            case "menor-mayor":
+                return importeA - importeB;
+            case "recientes":
+            default:
+                return fechaB.localeCompare(fechaA);
+        }
+    });
+
+    movimientosOrdenados.forEach(function(movimiento) {
 
         const elemento = document.createElement("li");
         elemento.classList.add("fila-movimiento");
@@ -815,20 +1005,37 @@ function mostrarMovimientos() {
             movimiento.tipo === "ingreso" ? "monto-ingreso" : "monto-gasto"
         );
 
-        // Botón eliminar
-        const botonEliminar = document.createElement("button");
+        // Acciones: editar y eliminar
+        const acciones = document.createElement("div");
+        acciones.classList.add("acciones-movimiento");
 
-        botonEliminar.textContent = "Eliminar";
+        const botonEditar = document.createElement("button");
+        botonEditar.type = "button";
+        botonEditar.textContent = "Editar";
+        botonEditar.classList.add("boton-editar-movimiento");
+        botonEditar.addEventListener("click", function() {
+            editarMovimiento(movimiento.id);
+        });
+
+        const botonEliminar = document.createElement("button");
+        botonEliminar.type = "button";
+        botonEliminar.textContent = "×";
+        botonEliminar.title = "Eliminar movimiento";
+        botonEliminar.setAttribute("aria-label", "Eliminar movimiento");
+        botonEliminar.classList.add("boton-eliminar-movimiento");
 
         botonEliminar.addEventListener("click", function() {
             eliminarMovimiento(movimiento.id);
         });
 
+        acciones.appendChild(botonEditar);
+        acciones.appendChild(botonEliminar);
+
         elemento.appendChild(descripcion);
         elemento.appendChild(categoria);
         elemento.appendChild(fecha);
         elemento.appendChild(monto);
-        elemento.appendChild(botonEliminar);
+        elemento.appendChild(acciones);
 
         listaMovimientos.appendChild(elemento);
 
@@ -838,10 +1045,50 @@ function mostrarMovimientos() {
 
 
 // ==========================================
+// EDITAR Y CANCELAR EDICIÓN DE MOVIMIENTOS
+// ==========================================
+
+function editarMovimiento(id) {
+    const movimiento = movimientos.find(function(item) {
+        return item.id === id;
+    });
+
+    if (!movimiento) return;
+
+    movimientoEnEdicionId = id;
+    descripcionInput.value = movimiento.descripcion;
+    montoInput.value = String(movimiento.monto).replace(".", ",");
+    tipoInput.value = movimiento.tipo;
+    categoriaInput.value = movimiento.categoria;
+    fechaInput.value = movimiento.fecha;
+
+    tituloFormularioMovimiento.textContent = "Editar movimiento";
+    botonGuardarMovimiento.textContent = "Guardar cambios";
+    botonCancelarEdicion.hidden = false;
+    formulario.scrollIntoView({ behavior: "smooth", block: "center" });
+    descripcionInput.focus();
+}
+
+function cancelarEdicionMovimiento() {
+    movimientoEnEdicionId = null;
+    formulario.reset();
+    fechaInput.value = obtenerFechaHoy();
+    tituloFormularioMovimiento.textContent = "Registrar movimiento";
+    botonGuardarMovimiento.textContent = "Agregar movimiento";
+    botonCancelarEdicion.hidden = true;
+}
+
+botonCancelarEdicion.addEventListener("click", cancelarEdicionMovimiento);
+
+
+// ==========================================
 // 7. ELIMINAR UN MOVIMIENTO
 // ==========================================
 
 function eliminarMovimiento(id) {
+    if (movimientoEnEdicionId === id) {
+        cancelarEdicionMovimiento();
+    }
 
     movimientos = movimientos.filter(function(movimiento) {
         return movimiento.id !== id;
@@ -851,8 +1098,8 @@ function eliminarMovimiento(id) {
     actualizarResumen();
     cargarMeses();
     mostrarMovimientos();
+    actualizarGraficos();
     actualizarPresupuestos();
-    
 
 }
 
@@ -943,6 +1190,7 @@ cargarPresupuestos();
 filtroMes.addEventListener("change", mostrarMovimientos);
 filtroTipo.addEventListener("change", mostrarMovimientos);
 filtroCategoria.addEventListener("change", mostrarMovimientos);
+ordenMovimientos.addEventListener("change", mostrarMovimientos);
 mesPresupuesto.addEventListener("change", actualizarPresupuestos);
 
 mesResumen.addEventListener("change", function() {

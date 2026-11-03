@@ -1,4 +1,4 @@
-const CACHE_NAME = "lupus-v3";
+const CACHE_NAME = "lupus-v8";
 
 const ARCHIVOS = [
     "./",
