@@ -1019,11 +1019,8 @@ function mostrarMovimientos() {
 
         const botonEliminar = document.createElement("button");
         botonEliminar.type = "button";
-        botonEliminar.textContent = "×";
-        botonEliminar.title = "Eliminar movimiento";
-        botonEliminar.setAttribute("aria-label", "Eliminar movimiento");
+        botonEliminar.textContent = "Eliminar";
         botonEliminar.classList.add("boton-eliminar-movimiento");
-
         botonEliminar.addEventListener("click", function() {
             eliminarMovimiento(movimiento.id);
         });
