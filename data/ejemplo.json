@@ -1,0 +1,58 @@
+{
+    "movimientos": [
+        { "id": 1000001, "descripcion": "Sueldo mensual", "monto": 850000, "tipo": "ingreso", "categoria": "trabajo", "fecha": "2026-06-05" },
+        { "id": 1000002, "descripcion": "Alquiler", "monto": 220000, "tipo": "gasto", "categoria": "vivienda", "fecha": "2026-06-06" },
+        { "id": 1000003, "descripcion": "Supermercado", "monto": 95400.5, "tipo": "gasto", "categoria": "alimentacion", "fecha": "2026-06-10" },
+        { "id": 1000004, "descripcion": "Colectivo y SUBE", "monto": 18500, "tipo": "gasto", "categoria": "transporte", "fecha": "2026-06-12" },
+        { "id": 1000005, "descripcion": "Internet", "monto": 28900, "tipo": "gasto", "categoria": "servicios", "fecha": "2026-06-15" },
+        { "id": 1000006, "descripcion": "Freelance: diseño web", "monto": 120000, "tipo": "ingreso", "categoria": "trabajo", "fecha": "2026-06-20" },
+        { "id": 1000007, "descripcion": "Cine con amigos", "monto": 24000, "tipo": "gasto", "categoria": "entretenimiento", "fecha": "2026-06-22" },
+
+        { "id": 1000008, "descripcion": "Sueldo mensual", "monto": 870000, "tipo": "ingreso", "categoria": "trabajo", "fecha": "2026-07-05" },
+        { "id": 1000009, "descripcion": "Alquiler", "monto": 225000, "tipo": "gasto", "categoria": "vivienda", "fecha": "2026-07-06" },
+        { "id": 1000010, "descripcion": "Supermercado", "monto": 102300, "tipo": "gasto", "categoria": "alimentacion", "fecha": "2026-07-09" },
+        { "id": 1000011, "descripcion": "Farmacia", "monto": 15800, "tipo": "gasto", "categoria": "salud", "fecha": "2026-07-14" },
+        { "id": 1000012, "descripcion": "Luz", "monto": 41200, "tipo": "gasto", "categoria": "servicios", "fecha": "2026-07-18" },
+        { "id": 1000013, "descripcion": "Nafta", "monto": 68000, "tipo": "gasto", "categoria": "transporte", "fecha": "2026-07-21" },
+        { "id": 1000014, "descripcion": "Cena de cumpleaños", "monto": 56000, "tipo": "gasto", "categoria": "alimentacion", "fecha": "2026-07-26" },
+
+        { "id": 1000015, "descripcion": "Sueldo mensual", "monto": 900000, "tipo": "ingreso", "categoria": "trabajo", "fecha": "2026-08-05" },
+        { "id": 1000016, "descripcion": "Alquiler", "monto": 230000, "tipo": "gasto", "categoria": "vivienda", "fecha": "2026-08-06" },
+        { "id": 1000017, "descripcion": "Supermercado", "monto": 110500, "tipo": "gasto", "categoria": "alimentacion", "fecha": "2026-08-11" },
+        { "id": 1000018, "descripcion": "Consulta médica", "monto": 35000, "tipo": "gasto", "categoria": "salud", "fecha": "2026-08-13" },
+        { "id": 1000019, "descripcion": "Suscripción streaming", "monto": 9800, "tipo": "gasto", "categoria": "entretenimiento", "fecha": "2026-08-16" },
+        { "id": 1000020, "descripcion": "Venta de mesa usada", "monto": 45000, "tipo": "ingreso", "categoria": "otros", "fecha": "2026-08-22" },
+        { "id": 1000021, "descripcion": "Agua", "monto": 18700, "tipo": "gasto", "categoria": "servicios", "fecha": "2026-08-25" },
+
+        { "id": 1000022, "descripcion": "Sueldo mensual", "monto": 930000, "tipo": "ingreso", "categoria": "trabajo", "fecha": "2026-09-05" },
+        { "id": 1000023, "descripcion": "Alquiler", "monto": 235000, "tipo": "gasto", "categoria": "vivienda", "fecha": "2026-09-06" },
+        { "id": 1000024, "descripcion": "Supermercado", "monto": 118900, "tipo": "gasto", "categoria": "alimentacion", "fecha": "2026-09-08" },
+        { "id": 1000025, "descripcion": "Curso online", "monto": 65000, "tipo": "gasto", "categoria": "trabajo", "fecha": "2026-09-12" },
+        { "id": 1000026, "descripcion": "Taxi al aeropuerto", "monto": 27000, "tipo": "gasto", "categoria": "transporte", "fecha": "2026-09-19" },
+        { "id": 1000027, "descripcion": "Gas", "monto": 33400, "tipo": "gasto", "categoria": "servicios", "fecha": "2026-09-20" },
+        { "id": 1000028, "descripcion": "Freelance: logo", "monto": 150000, "tipo": "ingreso", "categoria": "trabajo", "fecha": "2026-09-27" },
+
+        { "id": 1000029, "descripcion": "Sueldo mensual", "monto": 960000, "tipo": "ingreso", "categoria": "trabajo", "fecha": "2026-10-05" },
+        { "id": 1000030, "descripcion": "Alquiler", "monto": 240000, "tipo": "gasto", "categoria": "vivienda", "fecha": "2026-10-06" },
+        { "id": 1000031, "descripcion": "Supermercado", "monto": 124600.75, "tipo": "gasto", "categoria": "alimentacion", "fecha": "2026-10-10" },
+        { "id": 1000032, "descripcion": "Salida a comer", "monto": 62000, "tipo": "gasto", "categoria": "entretenimiento", "fecha": "2026-10-17" },
+        { "id": 1000033, "descripcion": "Nafta", "monto": 72500, "tipo": "gasto", "categoria": "transporte", "fecha": "2026-10-20" },
+        { "id": 1000034, "descripcion": "Seguro del auto", "monto": 54000, "tipo": "gasto", "categoria": "transporte", "fecha": "2026-10-23" },
+        { "id": 1000035, "descripcion": "Internet", "monto": 31000, "tipo": "gasto", "categoria": "servicios", "fecha": "2026-10-24" },
+
+        { "id": 1000036, "descripcion": "Reintegro obra social", "monto": 28500, "tipo": "ingreso", "categoria": "salud", "fecha": "2026-11-02" },
+        { "id": 1000037, "descripcion": "Supermercado", "monto": 40500, "tipo": "gasto", "categoria": "alimentacion", "fecha": "2026-11-03" }
+    ],
+    "presupuestos": [
+        { "id": 2000001, "categoria": "alimentacion", "monto": 150000, "mes": "2026-11" },
+        { "id": 2000002, "categoria": "transporte", "monto": 90000, "mes": "2026-11" },
+        { "id": 2000003, "categoria": "entretenimiento", "monto": 50000, "mes": "2026-11" },
+        { "id": 2000004, "categoria": "servicios", "monto": 80000, "mes": "2026-11" },
+        { "id": 2000005, "categoria": "salud", "monto": 40000, "mes": "2026-11" },
+        { "id": 2000006, "categoria": "vivienda", "monto": 250000, "mes": "2026-11" },
+        { "id": 2000007, "categoria": "trabajo", "monto": 70000, "mes": "2026-11" },
+        { "id": 2000008, "categoria": "alimentacion", "monto": 140000, "mes": "2026-10" },
+        { "id": 2000009, "categoria": "transporte", "monto": 130000, "mes": "2026-10" },
+        { "id": 2000010, "categoria": "vivienda", "monto": 240000, "mes": "2026-10" }
+    ]
+}
