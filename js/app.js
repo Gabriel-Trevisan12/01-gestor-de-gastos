@@ -1170,6 +1170,59 @@ function cargarMovimientos() {
 
 }
 
+// ==========================================
+// 9.1 CARGAR DATOS DE EJEMPLO
+// ==========================================
+
+async function cargarDatosEjemplo() {
+
+    const hayDatos = movimientos.length > 0 || presupuestos.length > 0;
+
+    if (hayDatos && !confirm(
+        "Esto reemplaza los movimientos y presupuestos guardados en este navegador. ¿Continuar?"
+    )) {
+        return;
+    }
+
+    let datos;
+
+    try {
+        const respuesta = await fetch("data/ejemplo.json");
+
+        if (!respuesta.ok) {
+            throw new Error("Respuesta HTTP " + respuesta.status);
+        }
+
+        datos = await respuesta.json();
+
+    } catch (error) {
+        console.error("Error al cargar los datos de ejemplo:", error);
+        alert("No se pudieron cargar los datos de ejemplo.");
+        return;
+    }
+
+    if (movimientoEnEdicionId !== null) {
+        cancelarEdicionMovimiento();
+    }
+
+    movimientos = datos.movimientos || [];
+    presupuestos = datos.presupuestos || [];
+
+    guardarMovimientos();
+    guardarPresupuestos();
+
+    actualizarResumen();
+    cargarMeses();
+    mostrarMovimientos();
+    actualizarPresupuestos();
+    actualizarGraficos();
+
+}
+
+document.getElementById("boton-cargar-ejemplo")
+    .addEventListener("click", cargarDatosEjemplo);
+
+
 
 // ==========================================
 // 10. INICIALIZAR APLICACIÓN
@@ -1208,7 +1261,21 @@ mesEstadisticas.addEventListener("change", function() {
 
     actualizarResumen();
     actualizarGraficos();
-    if ("serviceWorker" in navigator) {
+
+    mesEstadisticas.addEventListener("change", function() {
+
+    // El selector de estadísticas controla el período general
+    mesResumen.value = mesEstadisticas.value;
+
+    actualizarResumen();
+    actualizarGraficos();
+
+});
+// ==========================================
+// 11. REGISTRAR SERVICE WORKER
+// ==========================================
+
+if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
         navigator.serviceWorker.register("./service-worker.js")
             .then(() => {
@@ -1220,6 +1287,8 @@ mesEstadisticas.addEventListener("change", function() {
     });
 }
 
+
 });
+
 
 

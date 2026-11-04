@@ -41,7 +41,14 @@
         { "id": 1000035, "descripcion": "Internet", "monto": 31000, "tipo": "gasto", "categoria": "servicios", "fecha": "2026-10-24" },
 
         { "id": 1000036, "descripcion": "Reintegro obra social", "monto": 28500, "tipo": "ingreso", "categoria": "salud", "fecha": "2026-11-02" },
-        { "id": 1000037, "descripcion": "Supermercado", "monto": 40500, "tipo": "gasto", "categoria": "alimentacion", "fecha": "2026-11-03" }
+        { "id": 1000037, "descripcion": "Supermercado", "monto": 40500, "tipo": "gasto", "categoria": "alimentacion", "fecha": "2026-11-03" },
+        { "id": 1000001, "descripcion": "Sueldo mensual", "monto": 850000, "tipo": "ingreso", "categoria": "trabajo", "fecha": "2026-11-05" },
+        { "id": 1000002, "descripcion": "Alquiler", "monto": 220000, "tipo": "gasto", "categoria": "vivienda", "fecha": "2026-11-06" },
+        { "id": 1000003, "descripcion": "Supermercado", "monto": 95400.5, "tipo": "gasto", "categoria": "alimentacion", "fecha": "2026-11-10" },
+        { "id": 1000004, "descripcion": "Colectivo y SUBE", "monto": 18500, "tipo": "gasto", "categoria": "transporte", "fecha": "2026-11-12" },
+        { "id": 1000005, "descripcion": "Internet", "monto": 28900, "tipo": "gasto", "categoria": "servicios", "fecha": "2026-11-15" },
+        { "id": 1000011, "descripcion": "Freelance: diseño web", "monto": 120000, "tipo": "ingreso", "categoria": "trabajo", "fecha": "2026-11-20" },
+        { "id": 1000007, "descripcion": "Cine con amigos", "monto": 24000, "tipo": "gasto", "categoria": "entretenimiento", "fecha": "2026-11-22" }
     ],
     "presupuestos": [
         { "id": 2000001, "categoria": "alimentacion", "monto": 150000, "mes": "2026-11" },
