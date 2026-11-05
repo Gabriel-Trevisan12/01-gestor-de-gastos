@@ -20,7 +20,7 @@
         <aside class="sidebar">
 
             <div class="logo">
-                <h2>Mi Finanzas</h2>
+                <h2>Lupus</h2>
                 <p>Control personal</p>
             </div>
 
@@ -43,7 +43,7 @@
             </nav>
 
             <div class="sidebar-footer">
-                <p>Mi Finanzas © 2026</p>
+                <p>Lupus © 2026</p>
             </div>
 
         </aside>
@@ -91,11 +91,9 @@
                 </section>
 
                 <section class="panel-bienvenida">
-                    <h2>Tu situación financiera</h2>
-                    <p>
-                        Acá vamos a incorporar gráficos y resúmenes
-                        que te ayuden a entender cómo administrás tu dinero.
-                    </p>
+                    <h2>Principales gastos del mes</h2>
+                    <p>Las categorías en las que más gastaste en el período seleccionado.</p>
+                    <div id="top-categorias" class="top-categorias"></div>
                 </section>
                 
                 <section class="panel-bienvenida datos-ejemplo">
@@ -208,7 +206,14 @@
                         </select>
 
                     </div>
-
+                    <div class="cabecera-movimientos">
+                        <span>Descripción</span>
+                        <span>Categoría</span>
+                        <span>Fecha</span>
+                        <span>Monto</span>
+                        <span></span>
+                    </div>
+                    
                     <ul id="lista-movimientos"></ul>
 
                 </section>

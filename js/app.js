@@ -496,8 +496,204 @@ function actualizarResumen() {
     ingresosElement.textContent = formatearDinero(totalIngresos);
     gastosElement.textContent = formatearDinero(totalGastos);
     balanceElement.textContent = formatearDinero(balance);
+    actualizarTopCategorias();
+    actualizarTopCategorias();
 
  }
+ // ==========================================
+// RESUMEN: PRINCIPALES GASTOS DEL MES
+// ==========================================
+
+function actualizarTopCategorias() {
+
+    const contenedor = document.getElementById("top-categorias");
+    const mesSeleccionado = mesResumen.value;
+
+    const nombres = {
+        alimentacion: "Alimentación",
+        transporte: "Transporte",
+        vivienda: "Vivienda",
+        servicios: "Servicios",
+        salud: "Salud",
+        entretenimiento: "Entretenimiento",
+        trabajo: "Trabajo",
+        otros: "Otros"
+    };
+
+    // Sumamos los gastos del mes por categoría
+    const totales = {};
+    let totalGastos = 0;
+
+    movimientos.forEach(function(movimiento) {
+
+        const esGastoDelMes =
+            movimiento.tipo === "gasto" &&
+            movimiento.fecha &&
+            movimiento.fecha.startsWith(mesSeleccionado);
+
+        if (!esGastoDelMes) {
+            return;
+        }
+
+        const categoria = movimiento.categoria || "otros";
+
+        totales[categoria] = (totales[categoria] || 0) + movimiento.monto;
+        totalGastos += movimiento.monto;
+
+    });
+
+    // Ordenamos de mayor a menor y nos quedamos con las 5 primeras
+    const principales = Object.keys(totales)
+        .map(function(categoria) {
+            return { categoria: categoria, monto: totales[categoria] };
+        })
+        .sort(function(a, b) {
+            return b.monto - a.monto;
+        })
+        .slice(0, 5);
+
+    contenedor.innerHTML = "";
+
+    if (principales.length === 0) {
+        const vacio = document.createElement("p");
+        vacio.className = "top-vacio";
+        vacio.textContent = "Todavía no hay gastos registrados en este mes.";
+        contenedor.appendChild(vacio);
+        return;
+    }
+
+    principales.forEach(function(item) {
+
+        const porcentaje = Math.round((item.monto / totalGastos) * 100);
+
+        const fila = document.createElement("div");
+        fila.className = "top-fila";
+
+        const cabecera = document.createElement("div");
+        cabecera.className = "top-cabecera";
+
+        const nombre = document.createElement("span");
+        nombre.textContent = nombres[item.categoria] || "Otros";
+
+        const monto = document.createElement("span");
+        monto.textContent = formatearDinero(item.monto) + " (" + porcentaje + "%)";
+
+        cabecera.appendChild(nombre);
+        cabecera.appendChild(monto);
+
+        const barra = document.createElement("div");
+        barra.className = "barra-progreso";
+
+        const valor = document.createElement("div");
+        valor.className = "barra-progreso-valor";
+        valor.style.width = porcentaje + "%";
+
+        barra.appendChild(valor);
+
+        fila.appendChild(cabecera);
+        fila.appendChild(barra);
+        contenedor.appendChild(fila);
+
+    });
+
+}
+ // ==========================================
+// RESUMEN: PRINCIPALES GASTOS DEL MES
+// ==========================================
+
+function actualizarTopCategorias() {
+
+    const contenedor = document.getElementById("top-categorias");
+    const mesSeleccionado = mesResumen.value;
+
+    const nombres = {
+        alimentacion: "Alimentación",
+        transporte: "Transporte",
+        vivienda: "Vivienda",
+        servicios: "Servicios",
+        salud: "Salud",
+        entretenimiento: "Entretenimiento",
+        trabajo: "Trabajo",
+        otros: "Otros"
+    };
+
+    // Sumamos los gastos del mes por categoría
+    const totales = {};
+    let totalGastos = 0;
+
+    movimientos.forEach(function(movimiento) {
+
+        const esGastoDelMes =
+            movimiento.tipo === "gasto" &&
+            movimiento.fecha &&
+            movimiento.fecha.startsWith(mesSeleccionado);
+
+        if (!esGastoDelMes) {
+            return;
+        }
+
+        const categoria = movimiento.categoria || "otros";
+
+        totales[categoria] = (totales[categoria] || 0) + movimiento.monto;
+        totalGastos += movimiento.monto;
+
+    });
+
+    // Ordenamos de mayor a menor y nos quedamos con las 5 primeras
+    const principales = Object.keys(totales)
+        .map(function(categoria) {
+            return { categoria: categoria, monto: totales[categoria] };
+        })
+        .sort(function(a, b) {
+            return b.monto - a.monto;
+        })
+        .slice(0, 5);
+
+    contenedor.innerHTML = "";
+
+    if (principales.length === 0) {
+        const vacio = document.createElement("p");
+        vacio.className = "top-vacio";
+        vacio.textContent = "Todavía no hay gastos registrados en este mes.";
+        contenedor.appendChild(vacio);
+        return;
+    }
+
+    principales.forEach(function(item) {
+
+        const porcentaje = Math.round((item.monto / totalGastos) * 100);
+
+        const fila = document.createElement("div");
+        fila.className = "top-fila";
+
+        const cabecera = document.createElement("div");
+        cabecera.className = "top-cabecera";
+
+        const nombre = document.createElement("span");
+        nombre.textContent = nombres[item.categoria] || "Otros";
+
+        const monto = document.createElement("span");
+        monto.textContent = formatearDinero(item.monto) + " (" + porcentaje + "%)";
+
+        cabecera.appendChild(nombre);
+        cabecera.appendChild(monto);
+
+        const barra = document.createElement("div");
+        barra.className = "barra-progreso";
+
+        const valor = document.createElement("div");
+        valor.className = "barra-progreso-valor";
+        valor.style.width = porcentaje + "%";
+
+        barra.appendChild(valor);
+
+        fila.appendChild(cabecera);
+        fila.appendChild(barra);
+        contenedor.appendChild(fila);
+
+    });
+
+}
 
 // ==========================================
 // INFORME MENSUAL DESCARGABLE (IMPRIMIR / PDF)
