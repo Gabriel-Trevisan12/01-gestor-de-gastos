@@ -1,13 +1,12 @@
-
 /* =========================================
-   1. CONFIGURACIÓN GENERAL
+   LUPUS - ESTILOS
+   1. Tokens  2. Base  3. Layout  4. Componentes  5. Responsive
 ========================================= */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+
+/* =========================================
+   1. TOKENS
+========================================= */
 
 :root {
     --color-fondo: #f1f5f9;
@@ -15,22 +14,81 @@
     --color-sidebar: #172033;
     --color-sidebar-hover: #26344e;
     --color-primario: #2563eb;
+    --color-primario-hover: #1d4ed8;
     --color-texto: #1e293b;
     --color-secundario: #64748b;
     --color-borde: #e2e8f0;
+    --color-entrada: #cbd5e1;
     --color-ingreso: #16a34a;
     --color-gasto: #dc2626;
-}
+    --color-gasto-hover: #b91c1c;
+    --color-alerta: #f59e0b;
+    --color-etiqueta-fondo: #e0e7ff;
+    --color-etiqueta-texto: #3730a3;
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: var(--color-fondo);
-    color: var(--color-texto);
+    --radio: 12px;
+    --radio-chico: 8px;
+    --sombra: 0 1px 2px rgb(15 23 42 / 0.05);
+    --anillo-foco: 0 0 0 3px rgb(37 99 235 / 0.35);
+
+    /* Fuente del sistema: no depende de Google Fonts, así funciona sin conexión */
+    --fuente: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 
 /* =========================================
-   2. ESTRUCTURA PRINCIPAL
+   2. BASE
+========================================= */
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--fuente);
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.5;
+    min-width: 320px;
+}
+
+button,
+input,
+select {
+    font: inherit;
+    color: inherit;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* Estado de foco visible para teclado */
+:where(button, input, select):focus-visible {
+    outline: none;
+    box-shadow: var(--anillo-foco);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+/* =========================================
+   3. LAYOUT
 ========================================= */
 
 .app-container {
@@ -38,30 +96,64 @@ body {
     min-height: 100vh;
 }
 
+.contenido-principal {
+    flex: 1;
+    min-width: 0;
+    padding: 32px 40px;
+}
+
+.vista {
+    display: none;
+}
+
+.vista.activa {
+    display: block;
+}
+
+.encabezado {
+    margin-bottom: 28px;
+}
+
+.encabezado h1 {
+    font-size: 28px;
+    line-height: 1.2;
+    margin-bottom: 6px;
+}
+
+.encabezado p {
+    color: var(--color-secundario);
+    font-size: 15px;
+}
+
 
 /* =========================================
-   3. MENÚ LATERAL
+   4. COMPONENTES
 ========================================= */
 
+/* --- Menú lateral --- */
+
 .sidebar {
-    width: 250px;
-    min-height: 100vh;
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
     background-color: var(--color-sidebar);
-    color: white;
-    padding: 30px 20px;
+    color: #ffffff;
+    padding: 28px 18px;
     display: flex;
     flex-direction: column;
-    flex-shrink: 0;
 }
 
 .logo {
-    margin-bottom: 45px;
-    padding-left: 10px;
+    padding: 0 10px;
+    margin-bottom: 40px;
 }
 
 .logo h2 {
-    font-size: 23px;
-    margin-bottom: 6px;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
 }
 
 .logo p {
@@ -72,15 +164,15 @@ body {
 .menu {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .enlace-menu {
     width: 100%;
     text-align: left;
-    padding: 14px 15px;
+    padding: 12px 14px;
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radio-chico);
     background: transparent;
     color: #cbd5e1;
     font-size: 15px;
@@ -90,13 +182,13 @@ body {
 
 .enlace-menu:hover {
     background-color: var(--color-sidebar-hover);
-    color: white;
+    color: #ffffff;
 }
 
 .enlace-menu.activo {
     background-color: var(--color-primario);
-    color: white;
-    font-weight: bold;
+    color: #ffffff;
+    font-weight: 600;
 }
 
 .sidebar-footer {
@@ -106,416 +198,335 @@ body {
     font-size: 12px;
 }
 
-
-/* =========================================
-   4. CONTENIDO PRINCIPAL
-========================================= */
-
-.contenido-principal {
-    flex: 1;
-    min-width: 0;
-    padding: 35px;
-}
-
-.encabezado {
-    margin-bottom: 35px;
-}
-
-.encabezado h1 {
-    font-size: 28px;
-    margin-bottom: 8px;
-}
-
-.encabezado p {
-    color: var(--color-secundario);
-    font-size: 14px;
-}
-
-
-/* =========================================
-   5. NAVEGACIÓN ENTRE VISTAS
-========================================= */
-
-.vista {
-    display: none;
-}
-
-.vista.activa {
-    display: block;
-}
-
-
-/* =========================================
-   6. SELECTOR DE PERÍODO
-========================================= */
+/* --- Selector de período --- */
 
 .periodo-resumen {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 12px;
     margin-bottom: 20px;
 }
 
 .periodo-resumen label {
-    font-weight: bold;
     font-size: 14px;
+    font-weight: 600;
 }
 
 .periodo-resumen input {
-    padding: 10px;
-    border: 1px solid var(--color-borde);
-    border-radius: 7px;
-    background: white;
-    color: var(--color-texto);
+    padding: 9px 12px;
+    border: 1px solid var(--color-entrada);
+    border-radius: var(--radio-chico);
+    background: #ffffff;
 }
 
+/* --- Tarjetas de resumen --- */
 
-/* =========================================
-   7. TARJETAS DEL RESUMEN
-========================================= */
-
-.resumen {
+.resumen,
+.resumen-presupuesto {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-bottom: 30px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
 }
 
 .tarjeta {
     background-color: var(--color-superficie);
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px #00000008;
     border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    padding: 22px;
+    box-shadow: var(--sombra);
+    min-width: 0;
 }
 
 .tarjeta h2 {
-    font-size: 15px;
+    font-size: 14px;
+    font-weight: 600;
     color: var(--color-secundario);
-    margin-bottom: 18px;
+    margin-bottom: 10px;
 }
 
 .tarjeta p {
-    font-size: 25px;
-    font-weight: bold;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
 }
 
+/* --- Paneles y formularios --- */
 
-/* =========================================
-   8. PANELES INFORMATIVOS
-========================================= */
-
-.panel-bienvenida {
+.panel-bienvenida,
+.formulario,
+.movimientos,
+.lista-presupuestos,
+.panel-grafico {
     background-color: var(--color-superficie);
-    padding: 30px;
-    border-radius: 12px;
     border: 1px solid var(--color-borde);
-    box-shadow: 0 2px 8px #00000008;
+    border-radius: var(--radio);
+    padding: 24px;
+    box-shadow: var(--sombra);
+    margin-bottom: 20px;
+    min-width: 0;
 }
 
-.panel-bienvenida h2 {
-    font-size: 19px;
-    margin-bottom: 12px;
+.panel-bienvenida h2,
+.formulario h2,
+.movimientos h2,
+.lista-presupuestos h2 {
+    font-size: 18px;
+    margin-bottom: 8px;
 }
 
 .panel-bienvenida p {
     color: var(--color-secundario);
     line-height: 1.6;
+    margin-bottom: 16px;
 }
 
-
-/* =========================================
-   9. FORMULARIO
-========================================= */
-
-.formulario,
-.movimientos {
-    background-color: var(--color-superficie);
-    padding: 25px;
-    border-radius: 12px;
-    margin-bottom: 25px;
-    border: 1px solid var(--color-borde);
-    box-shadow: 0 2px 8px #00000008;
-}
-
-.formulario h2,
-.movimientos h2 {
-    font-size: 19px;
+.datos-ejemplo .boton-informe {
+    margin-top: 4px;
 }
 
 form {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin-top: 20px;
+    margin-top: 18px;
 }
 
-input,
-select,
+form input,
+form select,
 form button {
-    padding: 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 7px;
+    min-height: 42px;
+    padding: 11px 12px;
+    border: 1px solid var(--color-entrada);
+    border-radius: var(--radio-chico);
+    background-color: #ffffff;
     font-size: 14px;
 }
 
-input {
-    flex: 1;
-    min-width: 150px;
+form input {
+    flex: 1 1 160px;
+    min-width: 0;
 }
 
 form select {
-    background-color: white;
+    flex: 1 1 150px;
 }
 
 form button {
+    padding: 11px 18px;
     background-color: var(--color-primario);
-    color: white;
+    color: #ffffff;
     border: none;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background-color 0.2s;
 }
 
 form button:hover {
-    background-color: #1d4ed8;
+    background-color: var(--color-primario-hover);
 }
 
+form .boton-cancelar-edicion {
+    background-color: #64748b;
+}
 
-/* =========================================
-   10. FILTROS DEL HISTORIAL
-========================================= */
+form .boton-cancelar-edicion:hover {
+    background-color: #475569;
+}
+
+/* --- Botón de informe --- */
+
+.boton-informe {
+    padding: 10px 16px;
+    background-color: var(--color-primario);
+    color: #ffffff;
+    border: 0;
+    border-radius: var(--radio-chico);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.boton-informe:hover {
+    background-color: var(--color-primario-hover);
+}
+
+/* --- Filtros del historial --- */
 
 .filtros {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    align-items: center;
     gap: 12px;
-    margin: 20px 0;
+    margin: 18px 0;
 }
 
 .filtros select {
-    flex: 1;
-    min-width: 180px;
+    padding: 10px 12px;
+    border: 1px solid var(--color-entrada);
+    border-radius: var(--radio-chico);
     background-color: #f8fafc;
+    font-size: 14px;
     cursor: pointer;
 }
 
+.ordenar-label {
+    font-size: 14px;
+    font-weight: 600;
+}
 
-/* =========================================
-   11. LISTA DE MOVIMIENTOS
-========================================= */
+/* --- Lista de movimientos --- */
 
 #lista-movimientos {
     list-style: none;
-    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
-#lista-movimientos li {
+.fila-movimiento {
     display: grid;
-    grid-template-columns: 2fr 1.2fr 1fr 1.5fr 100px;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+    grid-template-areas: "descripcion categoria fecha monto acciones";
     align-items: center;
-    gap: 15px;
-    padding: 15px;
+    gap: 12px;
+    padding: 14px 4px;
     border-bottom: 1px solid var(--color-borde);
 }
 
-#lista-movimientos li span:nth-child(1) {
+.fila-movimiento > :nth-child(1) {
+    grid-area: descripcion;
+    font-weight: 600;
     overflow-wrap: anywhere;
 }
 
-#lista-movimientos li span:nth-child(2) {
-    text-align: center;
+.fila-movimiento > :nth-child(2) {
+    grid-area: categoria;
+    justify-self: start;
 }
 
-#lista-movimientos li span:nth-child(3) {
-    text-align: center;
-    white-space: nowrap;
+.fila-movimiento > :nth-child(3) {
+    grid-area: fecha;
     color: var(--color-secundario);
     font-size: 14px;
+    white-space: nowrap;
 }
 
-#lista-movimientos li span:nth-child(4) {
+.fila-movimiento > :nth-child(4) {
+    grid-area: monto;
     text-align: right;
     white-space: nowrap;
 }
 
+.fila-movimiento > :nth-child(5) {
+    grid-area: acciones;
+}
+
 .etiqueta-categoria {
-    background-color: #e0e7ff;
-    color: #3730a3;
-    padding: 6px 10px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: bold;
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background-color: var(--color-etiqueta-fondo);
+    color: var(--color-etiqueta-texto);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 .monto-ingreso {
     color: var(--color-ingreso);
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .monto-gasto {
     color: var(--color-gasto);
-    font-weight: bold;
+    font-weight: 700;
 }
 
-#lista-movimientos li button {
-    width: 100px;
-    background-color: var(--color-gasto);
-    color: white;
+.acciones-movimiento {
+    display: flex;
+    gap: 6px;
+}
+
+.boton-editar-movimiento,
+.boton-eliminar-movimiento {
+    padding: 7px 11px;
     border: none;
     border-radius: 6px;
-    padding: 8px 12px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-#lista-movimientos li button:hover {
-    background-color: #b91c1c;
+.boton-editar-movimiento {
+    background-color: var(--color-primario);
 }
 
-
-/* =========================================
-   12. ADAPTACIÓN A CELULARES
-========================================= */
-
-@media (max-width: 850px) {
-
-    .sidebar {
-        width: 200px;
-    }
-
-    .contenido-principal {
-        padding: 25px;
-    }
-
-    .resumen {
-        grid-template-columns: 1fr;
-    }
-
-    #lista-movimientos li {
-        grid-template-columns: 1.5fr 1fr;
-        gap: 10px;
-    }
-
-    #lista-movimientos li span:nth-child(2),
-    #lista-movimientos li span:nth-child(3),
-    #lista-movimientos li span:nth-child(4) {
-        text-align: left;
-    }
-
-    #lista-movimientos li button {
-        width: auto;
-    }
+.boton-editar-movimiento:hover {
+    background-color: var(--color-primario-hover);
 }
 
-@media (max-width: 600px) {
-
-    .app-container {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-        min-height: auto;
-        padding: 18px;
-    }
-
-    .logo {
-        margin-bottom: 18px;
-    }
-
-    .menu {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .enlace-menu {
-        width: auto;
-        flex: 1;
-        text-align: center;
-        padding: 11px 8px;
-        font-size: 13px;
-    }
-
-    .sidebar-footer {
-        display: none;
-    }
-
-    .contenido-principal {
-        padding: 20px 15px;
-    }
-
-    .encabezado {
-        margin-bottom: 25px;
-    }
-
-    .encabezado h1 {
-        font-size: 24px;
-    }
-
-    form {
-        flex-direction: column;
-    }
-
-    form input,
-    form select,
-    form button {
-        width: 100%;
-    }
-
-    .filtros {
-        flex-direction: column;
-    }
-
-    .filtros select {
-        width: 100%;
-    }
-
-    .formulario,
-    .movimientos {
-        padding: 18px;
-    }
+.boton-eliminar-movimiento {
+    background-color: var(--color-gasto);
 }
 
-/* =========================================
-   ESTADÍSTICAS Y GRÁFICOS
-========================================= */
-
-.estadisticas-encabezado {
-    margin-bottom: 25px;
+.boton-eliminar-movimiento:hover {
+    background-color: var(--color-gasto-hover);
 }
 
-.estadisticas-encabezado h2 {
-    font-size: 21px;
-    margin-bottom: 8px;
+/* --- Estadísticas --- */
+
+.estadisticas-encabezado,
+.presupuestos-encabezado {
+    margin-bottom: 24px;
 }
 
-.estadisticas-encabezado p {
+.estadisticas-encabezado h2,
+.presupuestos-encabezado h2 {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.estadisticas-encabezado p,
+.presupuestos-encabezado p {
     color: var(--color-secundario);
     font-size: 14px;
+}
+
+.presupuestos-encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.presupuestos-encabezado .periodo-resumen {
+    margin-bottom: 0;
 }
 
 .contenedor-graficos {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
+    gap: 16px;
 }
 
 .panel-grafico {
-    background-color: white;
-    border: 1px solid var(--color-borde);
-    border-radius: 12px;
-    padding: 25px;
-    min-width: 0;
+    margin-bottom: 0;
 }
 
 .panel-grafico h3 {
     font-size: 17px;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 .panel-grafico p {
     color: var(--color-secundario);
     font-size: 13px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .grafico {
@@ -523,79 +534,39 @@ form button:hover {
     height: 300px;
 }
 
-@media (max-width: 850px) {
-    .contenedor-graficos {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* =========================================
-   PRESUPUESTOS
-========================================= */
-
-.presupuestos-encabezado {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin-bottom: 25px;
-}
-
-.presupuestos-encabezado h2 {
-    font-size: 21px;
-    margin-bottom: 8px;
-}
-
-.presupuestos-encabezado p {
-    color: var(--color-secundario);
-    font-size: 14px;
-}
-
-.resumen-presupuesto {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-bottom: 25px;
-}
-
-.lista-presupuestos {
-    background: white;
-    padding: 25px;
-    border: 1px solid var(--color-borde);
-    border-radius: 12px;
-}
-
-.lista-presupuestos h2 {
-    font-size: 19px;
-    margin-bottom: 20px;
-}
+/* --- Presupuestos --- */
 
 #contenedor-presupuestos {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
+}
+
+#contenedor-presupuestos > p {
+    padding: 24px 0;
+    text-align: center;
+    color: var(--color-secundario);
 }
 
 .presupuesto-item {
-    padding: 20px;
+    padding: 18px;
     border: 1px solid var(--color-borde);
     border-radius: 10px;
-    background: #ffffff;
+    background-color: #ffffff;
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .presupuesto-item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px #0000000c;
+    box-shadow: 0 4px 12px rgb(15 23 42 / 0.08);
 }
 
 .presupuesto-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 14px;
+    gap: 12px;
+    margin-bottom: 12px;
 }
 
 .presupuesto-info h3 {
@@ -609,26 +580,26 @@ form button:hover {
 }
 
 .barra-progreso {
-    height: 10px;
-    background: #e2e8f0;
-    border-radius: 20px;
+    height: 8px;
+    background-color: var(--color-borde);
+    border-radius: 999px;
     overflow: hidden;
 }
 
 .barra-progreso-valor {
     height: 100%;
     width: 0;
-    background: #2563eb;
-    border-radius: 20px;
+    background-color: var(--color-primario);
+    border-radius: 999px;
     transition: width 0.5s ease;
 }
 
 .barra-progreso-valor.alerta {
-    background: #f59e0b;
+    background-color: var(--color-alerta);
 }
 
 .barra-progreso-valor.excedido {
-    background: #dc2626;
+    background-color: var(--color-gasto);
 }
 
 .presupuesto-detalle {
@@ -636,134 +607,49 @@ form button:hover {
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    margin-top: 12px;
+    margin-top: 10px;
     font-size: 13px;
     color: var(--color-secundario);
 }
 
 .boton-eliminar-presupuesto {
+    padding: 4px;
     border: none;
-    background: transparent;
-    color: #dc2626;
-    cursor: pointer;
+    background: none;
+    color: var(--color-gasto);
     font-size: 13px;
-    padding: 5px;
+    cursor: pointer;
 }
 
 .boton-eliminar-presupuesto:hover {
     text-decoration: underline;
 }
 
-@media (max-width: 850px) {
-    .resumen-presupuesto {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 600px) {
-    .presupuestos-encabezado {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .presupuesto-info {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .presupuesto-info p {
-        text-align: left;
-    }
-}
 
 /* =========================================
-   13. RESPONSIVE REFINADO - LUPUS
-   Ajustes para notebook, tablet y celular.
+   5. RESPONSIVE
 ========================================= */
 
-html {
-    width: 100%;
-    min-width: 320px;
-    scroll-behavior: smooth;
-}
-
-body {
-    min-width: 320px;
-    overflow-x: hidden;
-}
-
-button,
-input,
-select {
-    font: inherit;
-}
-
-button,
-select {
-    touch-action: manipulation;
-}
-
-.contenido-principal,
-.vista,
-.formulario,
-.movimientos,
-.panel-grafico,
-.lista-presupuestos {
-    min-width: 0;
-}
-
-.tarjeta p {
-    overflow-wrap: anywhere;
-}
-
-/* Notebook y tablet horizontal */
+/* Tablet horizontal */
 @media (max-width: 1100px) {
     .sidebar {
-        width: 220px;
-        padding: 25px 16px;
+        width: 210px;
+        padding: 24px 14px;
     }
 
     .contenido-principal {
         padding: 28px 24px;
     }
-
-    .resumen,
-    .resumen-presupuesto {
-        gap: 14px;
-    }
-
-    .tarjeta {
-        padding: 20px;
-    }
-
-    #lista-movimientos li {
-        grid-template-columns: minmax(130px, 2fr) minmax(100px, 1.2fr) minmax(85px, 1fr) minmax(110px, 1.5fr) 90px;
-        gap: 10px;
-    }
-
-    #lista-movimientos li button {
-        width: 90px;
-    }
 }
 
-/* Tablet vertical y pantallas medianas */
-@media (max-width: 850px) {
-    .app-container {
-        min-height: 100vh;
-    }
-
-    .sidebar {
-        width: 185px;
-        padding: 22px 12px;
-    }
-
-    .logo {
-        padding-left: 6px;
-        margin-bottom: 30px;
-    }
-
+/* Tablet vertical */
+@media (max-width: 860px) {
     .contenido-principal {
-        padding: 24px 18px;
+        padding: 24px 20px;
+    }
+
+    .contenedor-graficos {
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .resumen,
@@ -771,68 +657,32 @@ select {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .resumen .tarjeta:last-child,
-    .resumen-presupuesto .tarjeta:last-child {
+    .resumen > :last-child,
+    .resumen-presupuesto > :last-child {
         grid-column: 1 / -1;
-    }
-
-    .contenedor-graficos {
-        grid-template-columns: minmax(0, 1fr);
-    }
-
-    .grafico {
-        height: 270px;
-    }
-
-    #lista-movimientos li {
-        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-        gap: 10px 14px;
-        padding: 14px 10px;
-    }
-
-    #lista-movimientos li span:nth-child(2),
-    #lista-movimientos li span:nth-child(3),
-    #lista-movimientos li span:nth-child(4) {
-        text-align: left;
-    }
-
-    #lista-movimientos li span:nth-child(4) {
-        justify-self: start;
-    }
-
-    #lista-movimientos li button {
-        width: auto;
-        justify-self: start;
     }
 }
 
-/* Celulares */
-@media (max-width: 600px) {
+/* Celular: el menú pasa a una barra superior */
+@media (max-width: 720px) {
     .app-container {
-        display: flex;
         flex-direction: column;
     }
 
     .sidebar {
-        position: static;
         width: 100%;
-        min-height: auto;
-        padding: 14px 14px 12px;
-        gap: 12px;
+        height: auto;
+        position: static;
+        padding: 14px 16px;
     }
 
     .logo {
-        margin: 0;
-        padding: 0 4px;
+        padding: 0;
+        margin-bottom: 12px;
     }
 
     .logo h2 {
-        font-size: 21px;
-        margin-bottom: 3px;
-    }
-
-    .logo p {
-        font-size: 12px;
+        font-size: 20px;
     }
 
     .menu {
@@ -842,72 +692,71 @@ select {
     }
 
     .enlace-menu {
-        width: 100%;
-        min-width: 0;
-        min-height: 42px;
-        padding: 9px 5px;
-        border-radius: 7px;
-        font-size: 12px;
-        line-height: 1.2;
+        padding: 10px 4px;
+        font-size: 13px;
         text-align: center;
-        overflow-wrap: anywhere;
+    }
+
+    .sidebar-footer {
+        display: none;
     }
 
     .contenido-principal {
-        width: 100%;
-        padding: 20px 14px 30px;
-    }
-
-    .encabezado {
-        margin-bottom: 20px;
+        padding: 22px 16px 32px;
     }
 
     .encabezado h1 {
-        font-size: 23px;
-        line-height: 1.2;
-    }
-
-    .encabezado p {
-        font-size: 13px;
-        line-height: 1.5;
+        font-size: 24px;
     }
 
     .periodo-resumen {
-        align-items: stretch;
         flex-direction: column;
-        gap: 7px;
-        margin-bottom: 16px;
+        align-items: stretch;
     }
 
-    .periodo-resumen input {
+    .periodo-resumen input,
+    .boton-informe {
         width: 100%;
-        min-height: 43px;
     }
 
+    .fila-movimiento {
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+            "descripcion monto"
+            "categoria fecha"
+            "acciones acciones";
+    }
+
+    .fila-movimiento > :nth-child(3) {
+        justify-self: end;
+    }
+
+    .acciones-movimiento {
+        width: 100%;
+    }
+
+    .acciones-movimiento button {
+        flex: 1;
+    }
+
+    .grafico {
+        height: 250px;
+    }
+}
+
+/* Celular: todo en una columna */
+@media (max-width: 560px) {
     .resumen,
     .resumen-presupuesto {
         grid-template-columns: minmax(0, 1fr);
-        gap: 12px;
-        margin-bottom: 20px;
-    }
-
-    .resumen .tarjeta:last-child,
-    .resumen-presupuesto .tarjeta:last-child {
-        grid-column: auto;
     }
 
     .tarjeta {
         padding: 18px;
-        border-radius: 10px;
-    }
-
-    .tarjeta h2 {
-        margin-bottom: 10px;
-        font-size: 13px;
     }
 
     .tarjeta p {
-        font-size: clamp(21px, 6vw, 25px);
+        font-size: 24px;
     }
 
     .panel-bienvenida,
@@ -915,296 +764,64 @@ select {
     .movimientos,
     .lista-presupuestos,
     .panel-grafico {
-        padding: 17px 14px;
-        border-radius: 10px;
-    }
-
-    .panel-bienvenida h2,
-    .formulario h2,
-    .movimientos h2,
-    .lista-presupuestos h2 {
-        font-size: 17px;
-    }
-
-    .panel-bienvenida p {
-        font-size: 14px;
-    }
-
-    form {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 16px;
+        padding: 18px;
     }
 
     form input,
     form select,
     form button {
         width: 100%;
-        min-width: 0;
         min-height: 44px;
-        font-size: 16px; /* Evita zoom automático en iPhone */
+        font-size: 16px; /* evita el zoom automático en iPhone */
     }
 
     .filtros {
-        display: grid;
         grid-template-columns: minmax(0, 1fr);
-        gap: 9px;
-        margin: 16px 0;
     }
 
-    .filtros select {
-        width: 100%;
-        min-width: 0;
-        min-height: 43px;
-        font-size: 14px;
-    }
-
-    #lista-movimientos {
-        display: flex;
+    .presupuesto-info,
+    .presupuesto-detalle {
         flex-direction: column;
-        gap: 10px;
-        margin-top: 14px;
-    }
-
-    #lista-movimientos li {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: center;
-        gap: 9px 12px;
-        padding: 13px;
-        border: 1px solid var(--color-borde);
-        border-radius: 9px;
-        background: #fff;
-    }
-
-    #lista-movimientos li span:nth-child(1) {
-        min-width: 0;
-        font-size: 14px;
-        font-weight: bold;
-    }
-
-    #lista-movimientos li span:nth-child(2) {
-        justify-self: start;
-        font-size: 11px;
-        padding: 5px 8px;
-    }
-
-    #lista-movimientos li span:nth-child(3) {
-        font-size: 12px;
-        color: var(--color-secundario);
-    }
-
-    #lista-movimientos li span:nth-child(4) {
-        justify-self: end;
-        font-size: 14px;
-    }
-
-    #lista-movimientos li button {
-        grid-column: 1 / -1;
-        justify-self: stretch;
-        width: 100%;
-        min-height: 38px;
-        padding: 9px 12px;
-        font-size: 13px;
-    }
-
-    .estadisticas-encabezado h2,
-    .presupuestos-encabezado h2 {
-        font-size: 19px;
-    }
-
-    .estadisticas-encabezado p,
-    .presupuestos-encabezado p {
-        font-size: 13px;
-        line-height: 1.5;
-    }
-
-    .grafico {
-        height: 235px;
-    }
-
-    .presupuestos-encabezado {
-        align-items: stretch;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .presupuesto-item {
-        padding: 15px;
-    }
-
-    .presupuesto-info {
         align-items: flex-start;
-        flex-direction: column;
-        gap: 6px;
     }
 
     .presupuesto-info p {
         text-align: left;
-        overflow-wrap: anywhere;
     }
 
-    .presupuesto-detalle {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 6px;
+    .grafico {
+        height: 240px;
     }
 }
 
-/* Celulares muy angostos */
-@media (max-width: 360px) {
-    .contenido-principal {
-        padding-right: 10px;
-        padding-left: 10px;
-    }
+/* =========================================
+   RESUMEN: PRINCIPALES GASTOS
+========================================= */
 
-    .menu {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .enlace-menu {
-        font-size: 13px;
-    }
-
-    .tarjeta p {
-        font-size: 21px;
-    }
-}
-
-
-/* Acciones de cada movimiento */
-.acciones-movimiento {
+.top-categorias {
     display: flex;
-    justify-content: flex-end;
-    gap: 8px;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 8px;
 }
 
-#lista-movimientos li .acciones-movimiento button {
-    width: auto;
-    min-width: 72px;
-    padding: 8px 10px;
-    font-size: 13px;
-}
-
-#lista-movimientos li .boton-editar-movimiento {
-    background: #2563eb;
-}
-
-#lista-movimientos li .boton-editar-movimiento:hover {
-    background: #1d4ed8;
-}
-
-#lista-movimientos li .boton-eliminar-movimiento {
-    background: #dc2626;
-}
-
-#lista-movimientos li .boton-eliminar-movimiento:hover {
-    background: #b91c1c;
-}
-
-form .boton-cancelar-edicion {
-    background: #64748b;
-}
-
-form .boton-cancelar-edicion:hover {
-    background: #475569;
-}
-
-[hidden] {
-    display: none !important;
-}
-
-@media (max-width: 600px) {
-    #lista-movimientos li {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    #lista-movimientos li .acciones-movimiento {
-        grid-column: 1 / -1;
-        justify-content: flex-start;
-    }
-}
-
-
-/* Informe mensual */
-.boton-informe {
-    width: auto;
-    padding: 10px 16px;
-    background: #2563eb;
-    color: #fff;
-    border: 0;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-.boton-informe:hover { background: #1d4ed8; }
-.periodo-resumen {
+.top-cabecera {
     display: flex;
-    align-items: center;
-    flex-wrap: wrap;
+    justify-content: space-between;
     gap: 12px;
-}
-@media (max-width: 600px) {
-    .boton-informe { width: 100%; }
-}
-/* Ajustes visuales de movimientos */
-#lista-movimientos li {
-    grid-template-columns:
-        minmax(0, 2fr)
-        minmax(90px, 1.2fr)
-        minmax(90px, 1fr)
-        minmax(110px, 1fr)
-        auto;
+    font-size: 14px;
+    margin-bottom: 6px;
 }
 
-#lista-movimientos li span:nth-child(4) {
-    text-align: left;
-    justify-self: start;
+.top-cabecera span:first-child {
+    font-weight: 600;
+}
+
+.top-cabecera span:last-child {
+    color: var(--color-secundario);
     white-space: nowrap;
 }
 
-#lista-movimientos li .acciones-movimiento {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-}
-
-#lista-movimientos li .boton-eliminar-movimiento {
-    width: 34px;
-    min-width: 34px;
-    height: 34px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #dc2626;
-    color: white;
-    font-size: 25px;
-    font-weight: bold;
-    line-height: 1;
-    border-radius: 7px;
-}
-
-#lista-movimientos li .boton-eliminar-movimiento:hover {
-    background-color: #991b1b;
-}
-
-/* Adaptación para celulares */
-@media (max-width: 600px) {
-    #lista-movimientos li {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    }
-
-    #lista-movimientos li span:nth-child(4) {
-        justify-self: start;
-        text-align: left;
-    }
-
-    #lista-movimientos li .acciones-movimiento {
-        grid-column: 1 / -1;
-        justify-content: flex-end;
-    }
+.top-vacio {
+    color: var(--color-secundario);
 }
